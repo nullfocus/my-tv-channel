@@ -19,17 +19,17 @@ To run this service:
 ```
 git clone https://github.com/nullfocus/my-tv-channel.git 
 
-make start
+make daemon
 ```
 
 This will look for videos in the `./vids` directory and start streaming them.
 
-To change the directory, edit the `makefile` and update the location of the `video-location` variable.  
+To change the location of videos, edit the `makefile` and update the `video-location` variable.  
 
-To stop this service:
+To stop the daemonized instance:
 ```make stop```
 
-This will delete the instance and the image.
+This will also delete the instance and the image.
 
 ## Goals
 
@@ -61,10 +61,7 @@ _This all assumes you legally own the content or have licensing for it!_
 
 ## Open issues and next steps
 
- - HLS and DASH do not currently work
-   - This might pay dividends in reliability and should be prioritized
- - Currently forced to transcode with ffmpeg because during video changes the video drops
-   - Consider leveraging GPU, or alternate transcoding options
- - Improve script to randomize videos
- - Consider adding Basic Auth for public internet hosting
- - Consider adding a UI to download from youtube directly
+- [ ] Improve script to randomize videos
+- [ ] Consider adding Basic Auth for public internet hosting
+- [ ] Consider adding a UI to download from youtube directly
+- [x] Fix Dash or HLS streaming
