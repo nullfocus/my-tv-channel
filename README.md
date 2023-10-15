@@ -4,7 +4,7 @@
 </h1>
 
 <p align="center">
-  <i align="center">A project to create your _own personal_ tv channel</i>
+  <i align="center">A project to create your own personal tv channel</i>
 </p>
 
 ## Introduction
