@@ -11,25 +11,49 @@
 
 There was a Hacker News post recently where the OP asked what cool side-projects people had built. Some one replied that they had built a personal tv channel, streaming all their own content. 
 
-I thought that sounded so awesome, to fight the "paradox of choice", recreating the old days of cable tv surfing where you would stumble upon your favorite show or movie and just leave it on. 
+I thought that sounded so awesome, to fight the "paradox of choice" by recreating the serendipitous discovery of your favorite show, movie, or music video already playing on TV.
 
 ## Usage
-To run this service:
+
+0. Pre-requisites of `make` and `docker` on your unix-like machine, or with `WSL`
+
+1. Grab locally: 
+```
+git clone https://github.com/nullfocus/my-tv-channel.git
+```
+
+2. Fill up the `./vids/` directory with movies, music videos, home movies, etc. To change the location of videos, edit the `makefile` and update the `video-location` variable.  
+
+3. Run this in the background forever:
 
 ```
-git clone https://github.com/nullfocus/my-tv-channel.git 
-
 make daemon
 ```
 
-This will look for videos in the `./vids` directory and start streaming them.
+4. Browse to [http://localhost:8080](http://localhost:8080) to view the stream in your browser, or point `VLC` or other media players to [http://localhost:8080/dash/stream.mpd](http://localhost:8080/dash/stream.mpd)
 
-To change the location of videos, edit the `makefile` and update the `video-location` variable.  
 
-To stop the daemonized instance:
-```make stop```
+To stop the daemonized instance (this will also delete the instance and the image):
 
-This will also delete the instance and the image.
+``` 
+make stop 
+```
+
+## How does this work?
+
+This is a bunch of fun technologies rolled into one! Primarly it's leveraging `NGINX` which is the web server used by a _third_ of the web, and `ffmpeg` which is an A/V tool used directly or behind the scenese by _everyone with audio and video files to manipulate_.
+
+It's all packaged up with `Docker` which is basically a self-contained mini linux system, which supports repeatability and reproducability of software. This means if "it works on my machine" it will most likely work on yours.
+
+The `makefile` has a `build` command for building a docker image from the files in the proejct, and the directives in the `Dockerfile`. It uses a heavy-weight base image `ubuntu`, which avoids the need for downloading and comiling `NGINX`, and just installs a couple of tools and a libary. It saves this image locally as `my-tv-channel`. 
+
+You'll notice the `makefile` also has two similar commands `run` and `daemon`, which run the image directly in the command line or as a background service. It does two critical things, it _mounts_ the local `./vids/` file into the container, so that if you drop new files in there, they get automatically picked up and played, and it _exposes_ port `8080` locally for your web browser.
+
+When the docker instance runs, it kicks off `supervisord` which runs and monitor multiple processes. We're using it to run two in parallel: `NGINX` and the `run_stream.sh` script. 
+
+When `NGINX` fires up, its `nginx.conf` file, sets up an `RTMP` server on port `1935` using `Dash` technology. Essentially it turns the web server into a video streaming platform, by allowing a video source to push a stream that port. The configuration also lets us host html files, so we use that to host a simple `index.html` which uses the `dash.js` library to _view_ the stream in an embedded HTML5 `<video>` tag.
+
+_Finally_ the `run_stream.sh` runs, and continually searches for files in the `./vids/` directory with the extensions `.mkv`, `.mp4`, or `.avi`, and randomizes them. Then it runs the `ffmpeg` over each file, and streams the converted output to the `RTMP` endpoint created in `NGINX`. Don't ask me what all the flags do, `ffmpeg` is still high wizardy to me, so I used the [Akamai ffmpeg builder](https://moctodemo.akamaized.net/tools/ffbuilder/) to get to a starting point.
 
 ## Goals
 
@@ -61,7 +85,8 @@ _This all assumes you legally own the content or have licensing for it!_
 
 ## Open issues and next steps
 
-- [ ] Consider adding Basic Auth for public internet hosting
-- [ ] Consider adding a UI to download from youtube directly
+- [ ] Error handling for the script so it's resilient and doesn't bomb out randomly
+- [ ] Add SSL support (gets rid of the scary browser messages, and pairs well with Basic Auth below)
+- [ ] Add Basic Auth for some semblance of security?
 - [x] Fix Dash or HLS streaming
 - [x] Improve script to randomize videos

@@ -10,6 +10,6 @@ RUN chmod -R 755 /run_stream.sh
 RUN mkdir /vids/
 RUN mkdir /var/www/html/hls
 
-EXPOSE 80 1935 8088
+EXPOSE 80
 
 CMD ["/usr/bin/supervisord"]
