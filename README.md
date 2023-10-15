@@ -61,7 +61,7 @@ _This all assumes you legally own the content or have licensing for it!_
 
 ## Open issues and next steps
 
-- [ ] Improve script to randomize videos
 - [ ] Consider adding Basic Auth for public internet hosting
 - [ ] Consider adding a UI to download from youtube directly
 - [x] Fix Dash or HLS streaming
+- [x] Improve script to randomize videos
