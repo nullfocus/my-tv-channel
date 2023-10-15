@@ -1,14 +1,32 @@
 <html>
-  <head></head>
-  <body>
-    <div>
-      <h3>hls stream</h3>
-      <video src="http://localhost:8088/hls/stream.m3u8"> </video>
-    </div>
 
-    <div>
-      <h3>dash stream</h3>
-      <video src="http://localhost:8088/dash/stream.mpd"> </video>
-    </div>
-  </body>
+<head>
+
+    <style>
+        html, body {
+            padding: 0;
+            margin: 0;
+            background-color: black;
+        }
+        video{
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+
+</head>
+
+<body>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dashjs/4.7.2/dash.all.min.js"></script>
+
+    <video 
+        data-dashjs-player="" 
+        autoplay="" 
+        width="640" 
+        height="480" 
+        controls="true"
+        src="./dash/stream.mpd"
+    ></video>
+</body>
+
 </html>

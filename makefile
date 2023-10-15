@@ -2,20 +2,31 @@ image-name = my-tv-channel
 instance-name = mychannel
 video-location = ./vids
 
+clean:
+	- docker rm $(instance-name)
+
 build:
 	docker build -t $(image-name) ./
 
-start: build
+run: stop clean build
 	docker run \
 		--name $(instance-name) \
 		-v $(video-location):/vids \
+		-v ./index.html:/var/www/html/index.html \
 		-p 8080:80 \
-		-p 1935:1935 \
-		-p 8088:8088 \
 		$(image-name)
 
-stop:
-	docker stop $(instance-name)
-	docker rm $(instance-name)
+daemon: stop clean build
+	docker run \
+		--name $(instance-name) \
+		-v $(video-location):/vids \
+		-v ./index.html:/var/www/html/index.html \
+		-p 8080:80 \
+		--restart unless-stopped \
+		-d \
+		$(image-name)
+
+stop: 
+	- docker stop $(image-name)
 
 restart: stop start
