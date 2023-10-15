@@ -19,7 +19,6 @@ do
         -map 0:v:0 \
         -map 0:a:0 \
         -preset veryfast \
-        -tune zerolatency \
         -f flv \
         rtmp://localhost/live/stream
   done
