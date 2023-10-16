@@ -67,7 +67,7 @@ You'll notice the `makefile` also has two similar commands `run` and `daemon`, w
 
 When the docker instance runs, it kicks off `supervisord` which runs and monitor multiple processes. We're using it to run two in parallel: `NGINX` and the `run_stream.sh` script. 
 
-When `NGINX` fires up, its `nginx.conf` file, sets up an `RTMP` server on port `1935` using `Dash` technology. Essentially it turns the web server into a video streaming platform, by allowing a video source to push a stream that port. The configuration also lets us host html files, so we use that to host a simple `index.html` which uses the `dash.js` library to _view_ the stream in an embedded HTML5 `<video>` tag.
+When `NGINX` fires up, its `nginx.conf` file, sets up an `RTMP` server on port `1935` using `Dash` technology. Essentially it turns the web server into a video streaming platform, by allowing a video source to push a stream to that port. The web server then hosts that stream for multiple clients! The configuration also lets us host html files, so we use that to host a simple `index.html` which uses the `dash.js` library to _view_ the stream in an embedded HTML5 `<video>` tag.
 
 _Finally_ the `run_stream.sh` runs, and continually searches for files in the `./vids/` directory with the extensions `.mkv`, `.mp4`, or `.avi`, and randomizes them. Then it runs the `ffmpeg` over each file, and streams the converted output to the `RTMP` endpoint created in `NGINX`. Don't ask me what all the flags do, `ffmpeg` is still high wizardy to me, so I used the [Akamai ffmpeg builder](https://moctodemo.akamaized.net/tools/ffbuilder/) to get to a starting point.
 
@@ -91,7 +91,9 @@ Secondary desired outcomes:
 
 ## Open issues and next steps
 
-- [ ] Error handling for the script so it's resilient and doesn't bomb out randomly
+- [ ] DLNA module for NGINX to more easily stream to smart TVs and Roku devices
+- [ ] Investigate HLS streams again
+- [ ] Error handling for the script so it's resilient and won't bomb out if there's a hiccup somewhere
 - [ ] Add SSL support (gets rid of the scary browser messages, and pairs well with Basic Auth below)
 - [ ] Add Basic Auth for some semblance of security?
 - [x] Fix Dash or HLS streaming
