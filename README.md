@@ -7,6 +7,8 @@
   <i align="center">A project to create your own personal tv channel</i>
 </p>
 
+[DockerHub image](https://hub.docker.com/r/nullfocus/my-tv-channel)
+
 ## Introduction
 
 There was a Hacker News post recently where the OP asked what cool side-projects people had built. Some one replied that they had built a personal tv channel, streaming all their own content. 
@@ -96,5 +98,6 @@ Secondary desired outcomes:
 - [ ] Error handling for the script so it's resilient and won't bomb out if there's a hiccup somewhere
 - [ ] Add SSL support (gets rid of the scary browser messages, and pairs well with Basic Auth below)
 - [ ] Add Basic Auth for some semblance of security?
+- [x] Create `make.bat` for Docker Desktop on Windows
 - [x] Fix Dash or HLS streaming
 - [x] Improve script to randomize videos

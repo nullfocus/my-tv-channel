@@ -1,4 +1,4 @@
-image-name = my-tv-channel
+image-name = nullfocus/my-tv-channel
 instance-name = mychannel
 video-location = ./vids
 
