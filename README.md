@@ -28,7 +28,7 @@ _This all assumes you legally own the content or have licensing for it!_
 
 ## Usage
 
-0. Pre-requisites of `make` and `docker` on your unix-like machine, or with `WSL`
+0. Pre-requisites of `make` and `docker` on your unix-like machine. For Windows you need Docker Desktop, and replace `make` below with `make.bat` at the command line.
 
 1. Grab locally: 
 ```
@@ -78,6 +78,7 @@ _Finally_ the `run_stream.sh` runs, and continually searches for files in the `.
 The primary outcomes desired here are:
 
 - enable network streaming of video content
+- from a centralized location (ie. a tucked away server)
 - the videos should be streamed in random order, continually
 
 Secondary desired outcomes:
@@ -89,15 +90,15 @@ Secondary desired outcomes:
 ## Alternative approaches
 
 1. **Script it** - If the desire to host multiple clients were dropped, this could all be "faked" with a script that picks a random video and jumps to a random point within that video, then queues the rest of the videos randomly as well in a playlist.
-2. **Just use VLC** - You can point VLC to a directory and simply click repeat and randomize, and _done_!
+2. **Use VLC** - Again if it's just a single viewer, you could point VLC to a directory and simply click repeat and randomize
 
 ## Open issues and next steps
 
 - [ ] DLNA module for NGINX to more easily stream to smart TVs and Roku devices
-- [ ] Investigate HLS streams again
+- [ ] Get HLS streams working again
 - [ ] Error handling for the script so it's resilient and won't bomb out if there's a hiccup somewhere
 - [ ] Add SSL support (gets rid of the scary browser messages, and pairs well with Basic Auth below)
 - [ ] Add Basic Auth for some semblance of security?
-- [x] Create `make.bat` for Docker Desktop on Windows
+- [x] `make.bat` file to support Docker Desktop on Windows  
 - [x] Fix Dash or HLS streaming
 - [x] Improve script to randomize videos
